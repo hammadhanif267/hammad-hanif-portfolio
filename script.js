@@ -5,6 +5,85 @@
 document.addEventListener("DOMContentLoaded", () => {
 
     /* =====================================================
+       PROJECT IMAGE VIEWER
+       ===================================================== */
+
+    const projectImages = document.querySelectorAll(".project-card .project-image img");
+
+    if (projectImages.length) {
+        const viewer = document.createElement("div");
+        viewer.className = "project-image-viewer";
+        viewer.setAttribute("role", "dialog");
+        viewer.setAttribute("aria-modal", "true");
+        viewer.setAttribute("aria-label", "Project details");
+
+        viewer.innerHTML = `
+            <div class="project-viewer-panel">
+                <button class="project-viewer-close" type="button" aria-label="Close project details">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+                <div class="project-viewer-image">
+                    <img src="" alt="">
+                </div>
+                <div class="project-viewer-content"></div>
+            </div>
+        `;
+
+        document.body.appendChild(viewer);
+
+        const viewerImage = viewer.querySelector(".project-viewer-image img");
+        const viewerContent = viewer.querySelector(".project-viewer-content");
+        const closeViewerButton = viewer.querySelector(".project-viewer-close");
+
+        function closeProjectViewer() {
+            viewer.classList.remove("active");
+            document.body.classList.remove("project-viewer-open");
+            viewerImage.removeAttribute("src");
+            viewerContent.innerHTML = "";
+        }
+
+        function openProjectViewer(image) {
+            const card = image.closest(".project-card");
+            const content = card ? card.querySelector(".project-content") : null;
+
+            if (!card || !content) return;
+
+            viewerImage.src = image.currentSrc || image.src;
+            viewerImage.alt = image.alt || "Project image";
+
+            // Clone the complete project information so the original card stays unchanged.
+            viewerContent.innerHTML = "";
+            viewerContent.appendChild(content.cloneNode(true));
+
+            viewer.classList.add("active");
+            document.body.classList.add("project-viewer-open");
+        }
+
+        projectImages.forEach(image => {
+            image.addEventListener("click", event => {
+                event.preventDefault();
+                event.stopPropagation();
+                openProjectViewer(image);
+            });
+        });
+
+        closeViewerButton.addEventListener("click", closeProjectViewer);
+
+        viewer.addEventListener("click", event => {
+            if (event.target === viewer) {
+                closeProjectViewer();
+            }
+        });
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape" && viewer.classList.contains("active")) {
+                closeProjectViewer();
+            }
+        });
+    }
+
+
+    /* =====================================================
        1. AOS ANIMATIONS
     ===================================================== */
 

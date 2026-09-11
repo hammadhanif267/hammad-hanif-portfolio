@@ -1,0 +1,25 @@
+{
+  "redirects": [
+    {
+      "source": "/resume3.md",
+      "destination": "/Hammad_Hanif_Resume.pdf",
+      "permanent": true
+    },
+    {
+      "source": "/resume3.pdf",
+      "destination": "/Hammad_Hanif_Resume.pdf",
+      "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/Hammad_Hanif_Resume.pdf",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/pdf"
+        }
+      ]
+    }
+  ]
+}

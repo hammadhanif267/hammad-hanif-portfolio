@@ -34,6 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
         document.querySelector(".hamburger") ||
         document.querySelector(".nav-toggle");
 
+    const menuOverlay =
+        document.querySelector(".mobile-nav-overlay");
+
     const navLinks = [
         ...document.querySelectorAll(
             '.nav-links a[href^="#"], .nav-menu a[href^="#"]'
@@ -96,6 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
             "false"
         );
 
+        menuToggle.setAttribute(
+            "aria-label",
+            "Open navigation menu"
+        );
+
         document.body.classList.remove("menu-open");
     }
 
@@ -117,6 +125,13 @@ document.addEventListener("DOMContentLoaded", () => {
                 String(isOpen)
             );
 
+            menuToggle.setAttribute(
+                "aria-label",
+                isOpen
+                    ? "Close navigation menu"
+                    : "Open navigation menu"
+            );
+
             document.body.classList.toggle(
                 "menu-open",
                 isOpen
@@ -132,6 +147,25 @@ document.addEventListener("DOMContentLoaded", () => {
                 closeMenu
             );
 
+        });
+
+        if (menuOverlay) {
+            menuOverlay.addEventListener(
+                "click",
+                closeMenu
+            );
+        }
+
+        document.addEventListener("keydown", event => {
+            if (event.key === "Escape") {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener("resize", () => {
+            if (window.innerWidth > 900) {
+                closeMenu();
+            }
         });
 
     }
